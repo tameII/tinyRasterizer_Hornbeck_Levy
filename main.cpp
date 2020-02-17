@@ -7,10 +7,10 @@ const TGAColor red   = TGAColor(255, 0,   0,   255);
 int main(int argc, char** argv) {
 	TGAImage image(100, 100, TGAImage::RGB);
 	image.set(52, 41, red);
-	line(50, 5, 80, 40, image, white);
-	line(5, 10, 90, 100, image, red);
-	line(10, 5, 100, 90, image, white);
-	line(10, 100, 5, 90, image, red);
+	
+	line(15, 15, 90, 100, image, white);
+       	line(20, 15, 100, 90, image, white);
+
 	
 	line(20, 13, 40, 80, image, red);
 	line(80, 40, 13, 20, image, red);

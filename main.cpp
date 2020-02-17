@@ -11,6 +11,9 @@ int main(int argc, char** argv) {
 	line(5, 10, 90, 100, image, red);
 	line(10, 5, 100, 90, image, white);
 	line(10, 100, 5, 90, image, red);
+	
+	line(20, 13, 40, 80, image, red);
+	line(80, 40, 13, 20, image, red);
 	image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
 	image.write_tga_file("output.tga");
 	return 0;

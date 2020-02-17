@@ -14,7 +14,9 @@ struct TGA_Header {
     short x_origin;
     short y_origin;
     short width;
-    short height;
+
+
+  short height;
     char  bitsperpixel;
     char  imagedescriptor;
 };

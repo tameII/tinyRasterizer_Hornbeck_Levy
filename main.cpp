@@ -16,12 +16,7 @@ const int HEIGHT = 800;
 Model *model = NULL;
 
 int main(int argc, char** argv) {
-  bool draw_triangle = false;
-    if (2==argc) {
-      //this option is here to test triangles, it will be removed when it's done 
-      if(argv[1][0] == 't'){
-	draw_triangle = true;
-      }
+    if (2==argc) {      
         model = new Model(argv[1]);
     } else {
         model = new Model("obj/african_head.obj");
@@ -38,14 +33,20 @@ int main(int argc, char** argv) {
     int height = HEIGHT;
     int numColor = 0;
     TGAImage image(width, height, TGAImage::RGB);
-    if(!draw_triangle){
+    Vec3f light(0,0,-1);
     
-      for (int i=0; i<model->nfaces(); i++) {
-        std::vector<int> face = model->face(i);
-	Vec3f pf1 = model->vert(face[0]);
-        Vec3f pf2 = model->vert(face[1]);
-	Vec3f pf3 = model->vert(face[2]);
-	//now we have to convert this Vec3f in Vec2i
+    
+    for (int i=0; i<model->nfaces(); i++) {
+      std::vector<int> face = model->face(i);
+      //world coords
+      Vec3f pf1 = model->vert(face[0]);
+      Vec3f pf2 = model->vert(face[1]);
+      Vec3f pf3 = model->vert(face[2]);
+      Vec3f normal = (pf3-pf1)^(pf2-pf1);
+      normalise(&normal);
+      //now we have to convert this Vec3f in Vec2i, which are the screen coords
+      float intensity = normal*light;
+      if(intensity > 0){
 	int x1 = (pf1.x+1.)*width/2.;
 	int y1 = (pf1.y+1.)*height/2.;
 	Vec2i p1(x1,y1);
@@ -55,20 +56,17 @@ int main(int argc, char** argv) {
 	int x3 = (pf3.x+1.)*width/2.;
 	int y3 = (pf3.y+1.)*height/2.;
 	Vec2i p3(x3, y3);
-	triangle(p1,p2,p3, image, colors[numColor]);
+	std::cout << intensity << "\n";
+	intensity = intensity*255;
+	  
+	triangle(p1,p2,p3, image, TGAColor(intensity,intensity,intensity,255));
 	numColor++;
 	numColor = numColor%7;
       }
     }
-    else{
-      Vec2i p1(10,70), p2(50,160), p3(70,80);
-      triangle(p1,p2,p3, image, white);
-      Vec2i p4(180,50), p5(150,1), p6(70,180);
-      triangle(p4,p5,p6, image, red);
-      Vec2i p7(180,150), p8(120,160), p9(130,180);
-      triangle(p7,p8,p9, image, green);
-    }
-	image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
-	image.write_tga_file("output.tga");
-	return 0;
+
+   
+    image.flip_vertically(); 
+    image.write_tga_file("output.tga");
+    return 0;
 }

@@ -38,6 +38,9 @@ template <class t> struct Vec3 {
 	float norm () const { return std::sqrt(x*x+y*y+z*z); }
 	Vec3<t> & normalize(t l=1) { *this = (*this)*(l/norm()); return *this; }
 	template <class > friend std::ostream& operator<<(std::ostream& s, Vec3<t>& v);
+
+	public:
+	
 };
 
 typedef Vec2<float> Vec2f;
@@ -56,4 +59,5 @@ template <class t> std::ostream& operator<<(std::ostream& s, Vec3<t>& v) {
 }
 
 void triangle(Vec2<int> p1, Vec2<int> p2, Vec2<int> p3, TGAImage &image, TGAColor color);
+void normalise(Vec3f* vec);
 #endif //__JOJOMETRY_H__

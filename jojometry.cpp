@@ -76,3 +76,12 @@ void triangle(Vec2i p1, Vec2i p2, Vec2i p3, TGAImage &image, TGAColor color){
 
   
 }
+
+void normalise(Vec3f* vec){
+  float length = vec->x*vec->x + vec->y*vec->y + vec->z*vec->z;
+  length = sqrt(length);
+  vec->x /= length;
+  vec->y /= length;
+  vec->z /= length;
+
+}

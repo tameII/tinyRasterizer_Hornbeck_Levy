@@ -1,6 +1,7 @@
 //Fichier de geometrie
 #include "jojometry.h"
 #include <math.h>
+#include "iostream"
 
 
 void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) { 
@@ -9,7 +10,8 @@ void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) {
     std::swap(x0, y0); 
     std::swap(x1, y1); 
     steep = true; 
-  } 
+  }
+  //make sure that x0 < X1 
   if (x0>x1) { 
     std::swap(x0, x1); 
     std::swap(y0, y1); 
@@ -42,3 +44,35 @@ void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) {
   }
 }
 
+void triangle(Vec2i p1, Vec2i p2, Vec2i p3, TGAImage &image, TGAColor color){
+  //have to sort the vertices from lower height to highest
+  if(p1.v > p2.v) std::swap(p1,p2);
+  if(p1.v > p3.v) std::swap(p1,p3);
+  if(p2.v > p3.v) std::swap(p2,p3);
+
+
+  int triangle_height = p3.y-p1.y; 
+  for (int y=p1.y; y<=p2.y; y++) { 
+    int edge_height = p2.y-p1.y+1; 
+    float alpha = (float)(y-p1.y)/triangle_height; 
+    float beta  = (float)(y-p1.y)/edge_height; 
+    Vec2i A = p1 + (p3-p1)*alpha; 
+    Vec2i B = p1 + (p2-p1)*beta; 
+    if (A.x>B.x) std::swap(A, B);
+    line(A.x, y, B.x, y, image, color);
+ 
+  }
+
+  for (int y=p2.y; y<=p3.y; y++) { 
+    int edge_height =  p3.y-p2.y+1; 
+    float alpha = (float)(y-p1.y)/triangle_height; 
+    float beta  = (float)(y-p2.y)/edge_height; 
+    Vec2i A = p1 + (p3-p1)*alpha; 
+    Vec2i B = p2 + (p3-p2)*beta; 
+    if (A.x>B.x) std::swap(A, B);
+    line(A.x, y, B.x, y, image, color);
+
+  } 
+
+  
+}

@@ -55,4 +55,5 @@ template <class t> std::ostream& operator<<(std::ostream& s, Vec3<t>& v) {
 	return s;
 }
 
+void triangle(Vec2<int> p1, Vec2<int> p2, Vec2<int> p3, TGAImage &image, TGAColor color);
 #endif //__JOJOMETRY_H__
